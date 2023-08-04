@@ -1,0 +1,1181 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+      <div class="row mb-2">
+          <div class="col-sm-6">
+              <h1>Guia Remisión Remitente - Manual</h1>
+          </div>
+          <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">
+                      Guia Remisión Remitente Manual
+                  </li>
+              </ol>
+          </div>
+      </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+      <div class="card">
+          <div class="card-header">
+              <h3 class="card-title">Lista</h3>
+
+              <div class="card-tools">
+                  <button
+                      type="button"
+                      class="btn btn-tool"
+                      data-widget="collapse"
+                      data-toggle="tooltip"
+                      title="Collapse"
+                  >
+                      <i class="fa fa-minus"></i>
+                  </button>
+                  <button
+                      type="button"
+                      class="btn btn-tool"
+                      data-widget="remove"
+                      data-toggle="tooltip"
+                      title="Remove"
+                  >
+                      <i class="fa fa-times"></i>
+                  </button>
+              </div>
+          </div>
+
+          <!-- card-body -->
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-toggle="modal"
+                          data-target="#exampleModal"
+
+                          (click)="openModal()"
+                          data-backdrop="static"
+                      >
+                          Nueva GRR
+                      </button>
+                  </div>
+              </div>
+
+              <!-- Separador -->
+              <hr />
+
+              <div class="row">
+                  <div class="col-md-6">
+                      <select
+                          name="razonSocialBusqueda"
+                          class="form-control"
+                          (change)="
+                              onRazonSocialBusquedaSelected(
+                                  $event.target.value,
+                                  $event.target.options[
+                                      $event.target.selectedIndex
+                                  ].text
+                              )
+                          "
+                      >
+                          >
+                          <option value="" disabled selected>
+                              Seleccione la Empresa
+                          </option>
+                          <option
+                              *ngFor="let empresa of opcionesSelect"
+                              [value]="empresa.value"
+                          >
+                              {{ empresa.text }}
+                          </option>
+                      </select>
+                  </div>
+                  <div class="col-md-2">
+                      <button
+                          class="btn btn-primary"
+                          type="button"
+                          (click)="guiaManualListar()"
+                      >
+                          <i class="fas fa-search"></i> Búsqueda
+                      </button>
+                  </div>
+              </div>
+
+              <!-- Separador -->
+              <hr />
+
+              <!-- Cuadro de texto de búsqueda
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label for="searchInput">Filtrar:</label>
+                          <input
+                              type="text"
+                              class="form-control"
+                              id="searchInput"
+                              placeholder="Ingrese término de búsqueda"
+                          />
+                      </div>
+                  </div>
+              </div> -->
+              <!-- DataTable -->
+              <!-- <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Columna 1</th>
+                          <th>Columna 2</th>
+                          <th>Columna 3</th>
+
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>columna1</td>
+                          <td>columna2</td>
+                          <td>columna3</td>
+                      </tr>
+                  </tbody>
+              </table> -->
+
+              <div class="form-group">
+                  <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Buscar..."
+                      (input)="filterData($event)"
+                  />
+              </div>
+
+              <!-- <div class="container-fluid">
+                  <div table-responsive>
+                      <table
+                          id="myTable"
+                          class="table table-striped table-bordered"
+                      >
+                          <thead>
+                              <tr>
+                                  <th class="col-sm-2">Serie Número</th>
+                                  <th class="col-sm-2">Fecha de Emisión</th>
+                                  <th class="col-sm-2">Tipo de Traslado</th>
+                                  <th class="col-sm-2">Fecha Traslado</th>
+                                  <th class="col-sm-2">Status</th>
+                                  <th class="col-sm-1 text-nowrap"></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr
+                                  *ngFor="
+                                      let item of filteredData
+                                          | paginate
+                                              : {
+                                                    itemsPerPage:
+                                                        itemsPerPage,
+                                                    currentPage: currentPage
+                                                }
+                                  "
+                              >
+                                  <td class="col-sm-2">
+                                      {{ item.seriE_NUMERO }}
+                                  </td>
+                                  <td class="col-sm-2">
+                                      {{ item.fechA_EMISION }}
+                                  </td>
+                                  <td class="col-sm-2">
+                                      {{ item.descripcioN_TRASLADO }}
+                                  </td>
+                                  <td class="col-sm-2">
+                                      {{ item.iniciO_TRASLADO_ORIGEN }}
+                                  </td>
+                                  <td class="col-sm-2 text-center">
+                                      <span [ngSwitch]="item.descripcion">
+                                          <span
+                                              *ngSwitchCase="'En espera'"
+                                              class="badge badge-warning"
+                                              >En Espera</span
+                                          >
+                                          <span
+                                              *ngSwitchCase="'Aceptado'"
+                                              class="badge badge-success"
+                                              >Aceptado</span
+                                          >
+                                          <span
+                                              *ngSwitchCase="'Rechazado'"
+                                              class="badge badge-danger"
+                                              >Rechazado</span
+                                          >
+                                      </span>
+                                  </td>
+
+                                  <td
+                                      class="col-sm-1 text-nowrap text-center"
+                                  >
+                                      <button
+                                          class="btn btn-success btn-sm"
+                                          data-dismiss="modal"
+                                      >
+                                          <i class="fa fa-paper-plane"></i>
+                                      </button>
+                                      <button
+                                          class="btn btn-danger btn-sm ml-2"
+                                      >
+                                          <i class="fa fa-eye"></i>
+                                      </button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+
+                      <pagination-controls
+                          previousLabel="Anterior"
+                          nextLabel="Siguiente"
+                          (pageChange)="currentPage = $event"
+                      ></pagination-controls>
+                  </div>
+              </div> -->
+
+              <div class="row">
+                  <div class="col-12">
+                      <div class="table-responsive">
+                          <table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th>Serie Número</th>
+                                      <th>Fecha de Emisión</th>
+                                      <th>Tipo de Traslado</th>
+                                      <th>Fecha Traslado</th>
+                                      <th>Status</th>
+                                      <th class="col-sm-1 text-nowrap"></th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr
+                                      *ngFor="
+                                          let item of filteredData
+                                              | paginate
+                                                  : {
+                                                        itemsPerPage:
+                                                            itemsPerPage,
+                                                        currentPage:
+                                                            currentPage
+                                                    }
+                                      "
+                                  >
+                                      <td>
+                                          {{ item.seriE_NUMERO }}
+                                      </td>
+                                      <td>
+                                          {{ item.fechA_EMISION }}
+                                      </td>
+                                      <td>
+                                          {{ item.descripcioN_TRASLADO }}
+                                      </td>
+                                      <td>
+                                          {{ item.iniciO_TRASLADO_ORIGEN }}
+                                      </td>
+                                      <td>
+                                          <span [ngSwitch]="item.descripcion">
+                                              <span
+                                                  *ngSwitchCase="'En espera'"
+                                                  class="badge badge-warning"
+                                                  >En Espera</span
+                                              >
+                                              <span
+                                                  *ngSwitchCase="'Aceptado'"
+                                                  class="badge badge-success"
+                                                  >Aceptado</span
+                                              >
+                                              <span
+                                                  *ngSwitchCase="'Rechazado'"
+                                                  class="badge badge-danger"
+                                                  >Rechazado</span
+                                              >
+                                          </span>
+                                      </td>
+
+                                      <td
+                                          class="col-sm-1 text-nowrap text-center"
+                                      >
+                                          <button
+                                              class="btn btn-success btn-sm"
+                                              data-dismiss="modal"
+                                          >
+                                              <i
+                                                  class="fa fa-paper-plane"
+                                              ></i>
+                                          </button>
+                                          <button
+                                              class="btn btn-danger btn-sm ml-2"
+                                          >
+                                              <i class="fa fa-eye"></i>
+                                          </button>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+
+                          <!-- Paginación -->
+                          <pagination-controls
+                              previousLabel="Anterior"
+                              nextLabel="Siguiente"
+                              (pageChange)="currentPage = $event"
+                          ></pagination-controls>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- /.card-body -->
+          <div class="card-footer">GRR</div>
+          <!-- /.card-footer-->
+      </div>
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+<!-- Modal Principal -->
+<section>
+  <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+      data-backdrop="static"
+  >
+      <div
+          class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen"
+          role="document"
+          style="max-width: 90vw"
+      >
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="myModalLabel">
+                      Crear Nueva GRR
+                  </h5>
+                  <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                  >
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div *ngIf="datosVehiculo.invalid && (datosVehiculo.dirty || datosVehiculo.touched)" class="error-message">
+                <div class="alert alert-danger" role="alert">
+                  <strong>La placa del vehículo no puede estar vacio !</strong>
+                </div>
+              </div>
+              <div class="modal-body">
+                  <!-- Contenido del formulario -->
+                  <!-- Primera fila -->
+                  <form>
+                      <div class="form-row">
+                          <!-- <div class="form-group col-md-4">
+                              <label for="serieNumero">Serie Número</label>
+                              <input
+                                  type="text"
+                                  id="serieNumero"
+                                  class="form-control"
+                                  name="SERIE_NUMERO"
+                                  [(ngModel)]="formulario.SERIE_NUMERO"
+                              />
+                          </div> -->
+                          <div class="form-group col-md-4">
+                              <label for="fechaEmision"
+                                  >Fecha de Emisión</label
+                              >
+                              <input
+                                  type="text"
+                                  id="fechaEmision"
+                                  class="form-control"
+                                  name="FECHA_EMISION"
+                                  [(ngModel)]="fechaEmisionDocumento"
+                                  readonly
+                              />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="horaEmision">Hora de Emisión</label>
+                              <input
+                                  type="text"
+                                  id="horaEmision"
+                                  class="form-control"
+                                  name="HORA_EMISION"
+                                  [(ngModel)]="formulario.HORA_EMISION"
+                                  readonly
+                              />
+                          </div>
+                      </div>
+
+                      <!-- Segunda fila -->
+                      <div class="form-row">
+                          <div class="form-group col-md-3">
+                              <label for="rucRemitente">RUC Remitente</label>
+                              <input
+                                  type="text"
+                                  id="rucRemitente"
+                                  name="rucRemitente"
+                                  class="form-control"
+                                  maxlength="11"
+                                  [(ngModel)]="
+                                      formulario.NUMERO_DOCUMENTO_REMITENTE
+                                  "
+                                  required
+                                  readonly
+                              />
+                          </div>
+                          <div class="form-group col-md-3">
+                              <label for="razonSocialRemitente"
+                                  >Razón Social Remitente</label
+                              >
+                              <select
+                                  name="razonSocialRemitente"
+                                  class="form-control"
+                                  (change)="
+                                      onRazonSocialRemitenteSelected(
+                                          $event.target.value,
+                                          $event.target.options[
+                                              $event.target.selectedIndex
+                                          ].text
+                                      )
+                                  "
+                              >
+                                  >
+                                  <option value="" disabled selected>
+                                      Seleccione el remitente
+                                  </option>
+                                  <option
+                                      *ngFor="let rsocial of opcionesSelect"
+                                      [value]="rsocial.value"
+                                  >
+                                      {{ rsocial.text }}
+                                  </option>
+                              </select>
+                          </div>
+                          <div class="form-group col-md-3">
+                              <label for="rucDestinatario"
+                                  >RUC Destinatario</label
+                              >
+                              <input
+                                  type="text"
+                                  id="rucDestinatario"
+                                  name="rucDestinatario"
+                                  class="form-control"
+                                  maxlength="11"
+                                  [(ngModel)]="
+                                      formulario.NUMERO_DOCUMENTO_DESTINATARIO
+                                  "
+                                  readonly
+                              />
+                          </div>
+                          <div class="form-group col-md-3">
+                              <label
+                                  for="razonSocialDestinatario"
+                                  class="d-block"
+                                  >Razón Social Destinatario</label
+                              >
+                              <select
+                                  name="razonSocialDestinatario"
+                                  class="form-control"
+                                  (change)="
+                                      onRazonSocialDestinatarioSelected(
+                                          $event.target.value,
+                                          $event.target.options[
+                                              $event.target.selectedIndex
+                                          ].text
+                                      )
+                                  "
+                              >
+                                  >
+                                  <option value="" disabled selected>
+                                      Seleccione el destinatario
+                                  </option>
+                                  <option
+                                      *ngFor="let rsocial of opcionesSelect"
+                                      [value]="rsocial.value"
+                                  >
+                                      {{ rsocial.text }}
+                                  </option>
+                              </select>
+                          </div>
+                      </div>
+
+                      <!-- Tercera fila -->
+                      <fieldset>
+                          <legend>Datos de traslado</legend>
+                          <div class="form-row">
+                              <div class="form-group col-md-3">
+                                  <label for="motivoTraslado"
+                                      >Motivo de Traslado</label
+                                  >
+                                  <select
+                                      id="motivoTraslado"
+                                      class="form-control"
+                                      name="motivoTraslado"
+                                      (change)="
+                                          onMotivoTrasladoSelected(
+                                              $event.target.value,
+                                              $event.target.options[
+                                                  $event.target.selectedIndex
+                                              ].text
+                                          )
+                                      "
+                                  >
+                                      <option value="" disabled selected>
+                                          Seleccione el motivo traslado
+                                      </option>
+                                      <option
+                                          *ngFor="
+                                              let item of motivoTrasladoSelect
+                                          "
+                                          [value]="item.value"
+                                      >
+                                          {{ item.text }}
+                                      </option>
+                                  </select>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <label for="unidadMedida"
+                                      >Unidad de Medida</label
+                                  >
+                                  <select
+                                      id="unidadMedida"
+                                      class="form-control"
+                                      name="unidadMedidaPesoBruto"
+                                      (change)="
+                                          onUnidadMedidaPesoSelected(
+                                              $event.target.value,
+                                              $event.target.options[
+                                                  $event.target.selectedIndex
+                                              ].text
+                                          )
+                                      "
+                                  >
+                                      <option value="" disabled selected>
+                                          Seleccione la unidad de medida
+                                      </option>
+                                      <option
+                                          *ngFor="
+                                              let item of unidadMedidaPesoSelect
+                                          "
+                                          [value]="item.value"
+                                      >
+                                          {{ item.text }}
+                                      </option>
+                                  </select>
+                              </div>
+                              <div class="form-group col-md-2">
+                                  <label for="pesoBruto">Peso Bruto</label>
+                                  <input
+                                      type="number"
+                                      id="pesoBruto"
+                                      name="pesoBruto"
+                                      class="form-control"
+                                      step="0.01"
+                                      [(ngModel)]="formulario.PESO_BRUTO"
+                                  />
+
+                              </div>
+                              <div class="form-group col-md-2">
+                                  <label for="modalidadTraslado"
+                                      >Modalidad de Traslado</label
+                                  >
+                                  <select
+                                      id="modalidadTraslado"
+                                      class="form-control"
+                                      name="modalidadTraslado"
+                                      (change)="
+                                          onModalidadTrasladoSelected(
+                                              $event.target.value,
+                                              $event.target.options[
+                                                  $event.target.selectedIndex
+                                              ].text
+                                          )
+                                      "
+                                  >
+                                      <option value="" disabled selected>
+                                          Seleccione la modalidad de traslado
+                                      </option>
+                                      <option
+                                          *ngFor="
+                                              let item of modalidadTrasladoSelect
+                                          "
+                                          [value]="item.value"
+                                      >
+                                          {{ item.text }}
+                                      </option>
+                                  </select>
+                              </div>
+                              <div class="form-group col-md-2">
+                                  <label for="inicioTraslado"
+                                      >Inicio de Traslado</label
+                                  >
+                                  <input
+                                      type="date"
+                                      id="inicioTraslado"
+                                      name="iniciotraslado"
+                                      class="form-control"
+                                      [(ngModel)]="
+                                          formulario.INICIO_TRASLADO_ORIGEN
+                                      "
+                                      [min]="getCurrentDate()"
+                                  />
+                              </div>
+                          </div>
+                      </fieldset>
+
+                      <!-- Cuarta fila -->
+                      <div class="form-row">
+                          <div class="form-group col-md-2">
+                              <label for="rucOrigen">RUC Origen</label>
+                              <input
+                                  type="text"
+                                  id="rucOrigen"
+                                  class="form-control"
+                                  name="rucOrigen"
+                                  [(ngModel)]="formulario.RUC_ORIGEN"
+                              />
+                          </div>
+                          <div class="form-group col-md-3">
+                              <label for="ubigeoOrigenMedium"
+                                  >Ubigeo Origen</label
+                              >
+                              <div class="input-group">
+                                  <input
+                                      type="text"
+                                      id="ubigeoOrigen"
+                                      class="form-control"
+                                      name="ubigeoOrigen"
+                                      [(ngModel)]="ubigeoOrigenSeleccionado"
+                                      readonly
+                                  />
+                                  <div class="input-group-append">
+                                      <button
+                                          class="btn btn-primary"
+                                          type="button"
+                                          data-toggle="modal"
+                                          data-target="#modalUbigeo"
+                                          (click)="onModalSecondShow()"
+                                          (click)="abrirModalUbigeoOrigen()"
+                                      >
+                                          Buscar
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="form-group col-md-2">
+                              <label for="rucDestino">RUC Destino</label>
+                              <input
+                                  type="text"
+                                  id="rucDestino"
+                                  class="form-control"
+                                  name="rucDestino"
+                                  [(ngModel)]="formulario.RUC_DESTINO"
+                              />
+                          </div>
+                          <div class="form-group col-md-3">
+                              <label for="ubigeoDestinoMedium"
+                                  >Ubigeo Destino</label
+                              >
+                              <div class="input-group">
+                                  <input
+                                      type="text"
+                                      id="ubigeoDestino"
+                                      class="form-control"
+                                      name="ubigeoDestino"
+                                      [(ngModel)]="ubigeoDestinoSeleccionado"
+                                      readonly
+                                  />
+                                  <div class="input-group-append">
+                                      <button
+                                          class="btn btn-primary"
+                                          type="button"
+                                          data-toggle="modal"
+                                          data-target="#modalUbigeo"
+                                          (click)="onModalSecondShow()"
+                                          (click)="abrirModalUbigeoDestino()"
+                                          >
+                                          Buscar
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group col-md-2" *ngIf="tipoTrasladoPrivado">
+                              <label for="datosVehiculo"
+                                  >Placa del Vehículo</label
+                              >
+                              <div class="input-group">
+                                  <input
+                                      type="text"
+                                      class="form-control"
+                                      id="datosVehiculo"
+                                      name="datosVehiculo"
+                                      [formControl]="datosVehiculo"
+                                      [(ngModel)]="formulario.PLACA_VEHICULO"
+                                  />
+                              </div>
+                          </div>
+
+                      </div>
+
+                      <!-- Quinta fila -->
+                      <div class="form-row">
+                          <div class="form-group col-md-6">
+                              <label for="direccionOrigen"
+                                  >Dirección Origen</label
+                              >
+                              <textarea
+                                  class="form-control"
+                                  id="direccionOrigen"
+                                  name="direccionOrigen"
+                                  rows="3"
+                                  [(ngModel)]="formulario.DIRECCION_ORIGEN"
+                              ></textarea>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label for="direccionDestino"
+                                  >Dirección Destino</label
+                              >
+                              <textarea
+                                  class="form-control"
+                                  id="direccionDestino"
+                                  name="direccionDestino"
+                                  rows="3"
+                                  [(ngModel)]="formulario.DIRECCION_DESTINO"
+                              ></textarea>
+                          </div>
+                      </div>
+
+                      <!-- Sexta fila -->
+                      <fieldset>
+                          <legend>Datos del Transportista</legend>
+
+                          <!-- TRANSPORTE PRIVADO -->
+                          <div class="form-row" *ngIf="tipoTrasladoPrivado">
+                              <div class="form-group col-md-2">
+                                  <label for="datosTransportista"
+                                      >Nombres</label
+                                  >
+                                  <div class="input-group">
+                                      <input
+                                          type="text"
+                                          class="form-control"
+                                          id="datosTransportistaNombres"
+                                          name="datosTransportistaNombres"
+                                          [(ngModel)]="formulario.CP_NOMBRES"
+                                      />
+                                  </div>
+                              </div>
+                              <div class="form-group col-md-2">
+                                  <label for="datosTransportista"
+                                      >Apellidos</label
+                                  >
+                                  <div class="input-group">
+                                      <input
+                                          type="text"
+                                          class="form-control"
+                                          id="datosTransportista"
+                                          name="datosTransportistaApellido"
+                                          [(ngModel)]="
+                                              formulario.CP_APELLIDOS
+                                          "
+                                      />
+                                  </div>
+                              </div>
+
+                              <div class="form-group col-md-2">
+                                  <label for="tipoDocumento"
+                                      >Tipo Documento</label
+                                  >
+                                  <select
+                                      id="tipoDocumentoIdentidad"
+                                      class="form-control"
+                                      name="tipoDocumentoIdentidad"
+                                      (change)="
+                                          onTipoDocumentoIdentidadSelected(
+                                              $event.target.value,
+                                              $event.target.options[
+                                                  $event.target.selectedIndex
+                                              ].text
+                                          )
+                                      "
+                                  >
+                                      <option value="" disabled selected>
+                                          Seleccione el Tipo de Documento
+                                      </option>
+                                      <option
+                                          *ngFor="
+                                              let item of tipoDocumentoIdentidadSelect
+                                          "
+                                          [value]="item.value"
+                                      >
+                                          {{ item.text }}
+                                      </option>
+                                  </select>
+                              </div>
+                              <div class="form-group col-md-2">
+                                  <label for="numeroDocumentoTransportista"
+                                      >Número de Documento</label
+                                  >
+                                  <div class="input-group">
+                                      <input
+                                          type="text"
+                                          class="form-control"
+                                          id="numeroDocumento"
+                                          name="numeroDocumento"
+                                          [(ngModel)]="
+                                              formulario.CP_NUMERO_DOCUMENTO
+                                          "
+                                      />
+                                  </div>
+                              </div>
+
+                              <div class="form-group col-md-2">
+                                  <label for="numeroLicenciaTransportista"
+                                      >Número de Licencia</label
+                                  >
+                                  <div class="input-group">
+                                      <input
+                                          type="text"
+                                          class="form-control"
+                                          id="numeroLicencia"
+                                          name="numeroLicencia"
+                                          [(ngModel)]="formulario.CP_LICENCIA"
+                                      />
+                                  </div>
+                              </div>
+                          </div>
+
+
+                          <!-- TRANSPORTE PUBLICO -->
+
+                          <div class="form-row" *ngIf="tipoTrasladoPublico">
+                            <div class="form-group col-md-2">
+                                <label for="datosTransportista"
+                                    >RUC Transportista</label
+                                >
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="datosTransportistaRuc"
+                                        name="datosTransportistaRuc"
+                                        [(ngModel)]="formulario.CP_RUC"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="datosTransportista"
+                                    >Razon Social Transportista</label
+                                >
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="datosTransportistaRazonSocial"
+                                        name="datosTransportistaRazonSocial"
+                                        [(ngModel)]="
+                                            formulario.CP_RAZON_SOCIAL
+                                        "
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+
+                      </fieldset>
+
+                      <!-- Sexta fila -->
+                      <div class="form-row">
+                          <!-- Código de la sexta fila aquí -->
+                      </div>
+
+                      <!-- Séptima fila -->
+                      <div class="form-row">
+                          <div class="form-group col-md-12">
+                              <button
+                                  type="button"
+                                  class="btn btn-primary"
+                                  data-toggle="modal"
+                                  data-target="#modalAgregarItem"
+                                  data-backdrop="static"
+                                  (click)="onModalSecondShow()"
+                                  (click)="abrirModalUnidad()"
+                              >
+                                  Agregar item
+                              </button>
+                          </div>
+                      </div>
+
+                      <!-- Octava fila -->
+                      <div class="form-row">
+
+                          <div class="col-md-12">
+                            <div class="table-responsive">
+
+                              <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Unidad</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="
+                                            let elemento of elementos;
+                                            let i = index
+                                        "
+                                    >
+                                        <td>
+                                            {{ elemento.descripcion }}
+                                        </td>
+                                        <td>
+                                            {{ elemento.unidad }}
+                                        </td>
+                                        <td>
+                                            {{ elemento.cantidad }}
+                                        </td>
+                                        <td>
+                                            <button
+                                                class="btn btn-danger btn-sm"
+                                                (click)="eliminarFila(i)"
+                                            >
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Agrega aquí más filas si es necesario -->
+                                </tbody>
+                            </table>
+
+                            </div>
+                          </div>
+
+
+
+                      </div>
+
+                      <!-- Agrega aquí las siguientes filas del formulario -->
+                  </form>
+
+                  <!-- Fin Contenido del formulario -->
+              </div>
+              <div class="modal-footer">
+                  <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                      (click)="limpiarModal()"
+                  >
+                      Cancelar
+                  </button>
+
+                  <!-- <button
+                      *ngIf="!btnNuevaGRR"
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="guardarGuiaRemitenteManual()"
+                      data-dismiss="modal"
+                  >
+                      Guardar
+                  </button> -->
+
+                  <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="guardarGuiaRemitenteManual()"
+                      data-dismiss="modal"
+                  >
+                      Guardar
+                  </button>
+
+
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<!-- Modal Agregar Item -->
+<section>
+  <div
+      class="modal fade"
+      id="modalAgregarItem"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalAgregarItemLabel"
+      aria-hidden="true"
+  >
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="modalAgregarItemLabel">
+                      Agregar Item
+                  </h5>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group">
+                      <label for="unidad">Unidad</label>
+                      <!-- <select id="unidad" class="form-control">
+                          <option value="NIU">NIU</option>
+                          <option value="KGM">KGM</option>
+                          <option value="ML">ML</option>
+                      </select> -->
+
+
+                      <select
+                          name="unidades"
+                          class="form-control"
+                          (change)="
+                              onUnidadSelected(
+                                  $event.target.value,
+                                  $event.target.options[
+                                      $event.target.selectedIndex
+                                  ].text
+                              )
+                          "
+                      >
+                          >
+                          <option value="" disabled selected>
+                              Seleccione la Unidad
+                          </option>
+                          <option
+                              *ngFor="let rsocial of listaUnidades"
+                              [value]="rsocial.codigo"
+                          >
+                              {{ rsocial.descripcion }}
+                          </option>
+                      </select>
+
+                  </div>
+                  <div class="form-group">
+                      <label for="descripcion">Descripción</label>
+                      <input
+                          type="text"
+                          id="descripcion"
+                          class="form-control"
+                      />
+                  </div>
+                  <div class="form-group">
+                      <label for="cantidad">Cantidad</label>
+                      <input
+                          type="number"
+                          id="cantidad"
+                          class="form-control"
+                          step="0.01"
+                      />
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                  >
+                      Cerrar
+                  </button>
+                  <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="guardarElemento()"
+                      data-dismiss="modal"
+                  >
+                      Guardar
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<!-- Modal Ubigeo -->
+<section>
+  <div id="modalUbigeo" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Ubigeo</h5>
+                  <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                      data-dismiss="modal"
+                      (click)="cerrarModalUbigeo()"
+                  >
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <input
+                      type="text"
+                      placeholder="Buscar"
+                      (input)="filterUbigeos($event)"
+                      [(ngModel)]="searchTextUbigeo"
+                      class="form-control mb-3"
+                  />
+                  <table class="table table-sm table-striped-columns">
+                      <thead>
+                          <tr>
+                              <th>Ubigeo</th>
+                              <th>Descripción</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr
+                              *ngFor="let ubigeo of paginate(); let i = index"
+                          >
+                              <td>{{ ubigeo.ubigeo }}</td>
+                              <td>{{ ubigeo.descripcion }}</td>
+                              <td>
+                                  <button
+                                      class="btn btn-success btn-sm"
+                                      (click)="seleccionarUbigeo(ubigeo)"
+                                      data-dismiss="modal"
+                                  >
+                                      <i class="fas fa-check"></i>
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+                  <div class="pagination">
+                      <button
+                          class="page-link btn btn-light"
+                          [disabled]="currentPage === 1"
+                          (click)="currentPage = currentPage - 1"
+                      >
+                          Anterior
+                      </button>
+
+                      <div class="text-center">
+                          <span
+                              class="page-numbers badge badge-secondary text-lg"
+                              >{{ currentPage }}</span
+                          >
+                      </div>
+                      <button
+                          class="page-link btn btn-light"
+                          [disabled]="currentPage === TotalPages"
+                          (click)="currentPage = currentPage + 1"
+                      >
+                          Siguiente
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>

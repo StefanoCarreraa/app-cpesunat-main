@@ -1,0 +1,15 @@
+[
+  {"codigo":"DZN", "descripcion":"Docena"},
+  {"codigo":"BG", "descripcion":"Bolsa"},
+  {"codigo":"BX", "descripcion":"Caja"},
+  {"codigo":"CEN", "descripcion":"Ciento"},
+  {"codigo":"GLL", "descripcion":"Galón"},
+  {"codigo":"KGM", "descripcion":"Kilogramo"},
+  {"codigo":"CA", "descripcion":"Lata"},
+  {"codigo":"MTR", "descripcion":"Metro"},
+  {"codigo":"MTK", "descripcion":"Metro Cuadrado"},
+  {"codigo":"MTK", "descripcion":"Metro Cúbico"},
+  {"codigo":"C62", "descripcion":"Piezas"},
+  {"codigo":"TNE", "descripcion":"Toneladas"},
+  {"codigo":"NIU", "descripcion":"Unidad"}
+]
