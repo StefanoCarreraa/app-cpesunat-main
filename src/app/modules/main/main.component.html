@@ -5,6 +5,7 @@
 <div class="content-wrapper">
     <router-outlet></router-outlet>
 </div>
+<app-spinner *ngIf="isLoading"></app-spinner>
 
 <app-footer></app-footer>
 <app-control-sidebar></app-control-sidebar>

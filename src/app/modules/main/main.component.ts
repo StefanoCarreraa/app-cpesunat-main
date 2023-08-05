@@ -13,6 +13,7 @@ import {Observable} from 'rxjs';
 export class MainComponent implements OnInit {
     @HostBinding('class') class = 'wrapper';
     public ui: Observable<UiState>;
+    isLoading: boolean = false;
 
     constructor(private renderer: Renderer2, private store: Store<AppState>) {}
 

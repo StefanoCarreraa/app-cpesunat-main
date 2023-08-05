@@ -86,6 +86,8 @@ export class GuiaRemisionRemitenteManualComponent {
         {value: '6', text: 'Registro Unico de Contributentes'}
     ];
 
+    isLoading: boolean = false;
+
     onRazonSocialBusquedaSelected(value: any, text: string): void {
         // this.formulario.RAZON_SOCIAL_REMITENTE = text;
         this.rucBusqueda = value;
@@ -253,6 +255,7 @@ export class GuiaRemisionRemitenteManualComponent {
     // Función para cerrar el modal
     closeModal() {
         this.modalVisible = false;
+        this.isLoading = false;
     }
 
     // Función para guardar los datos del formulario
@@ -291,42 +294,52 @@ export class GuiaRemisionRemitenteManualComponent {
     }
 
     guardarGuiaRemitenteManual() {
-        this.formulario.ID_DOC_GUIA = '133';
-        this.formulario.PROFILE_ID = '0101';
-        this.formulario.VERSION_UBL = '2.1';
-        this.formulario.CUSTOMATIZACION = '2.0';
-        this.formulario.SERIE_NUMERO = '';
-        this.formulario.TIPO_DOCUMENTO = '09';
-        this.formulario.TIPO_DOCUMENTO_REMITENTE = '6';
-        this.formulario.TIPO_DOCUMENTO_DESTINATARIO = '6';
-        this.formulario.IDENTIFICADOR_TRASLADO = 'SUNAT_Envio';
-        this.formulario.CP_TIPO = 'Principal';
-        this.formulario.TIPO_ORIGEN = 0;
-        this.formulario.ID_DOC_ORIGEN = 0;
-        this.formulario.FECHA_EMISION = cambiarFormatoFecha(
-            this.fechaEmisionDocumento
-        );
-        this.formulario.ITEMS = this.elementos;
-        this.formulario.PESO_BRUTO = this.formulario.PESO_BRUTO.toString();
+        try {
+            this.isLoading = !this.isLoading;
 
-        this.grr_service
-            .guiaremisionremitentemanual_registrar(this.formulario)
-            .subscribe(
-                (response) => {
-                    // console.log(response);
-                    this.toastr.success(
-                        'Se registró la guía de remisión ' +
-                            response.serie_numero
-                    );
-                },
-                (error) => {
-                    // this.btnNuevaGRR = false;
-                    this.toastr.error('Error');
-                    // console.log(error);
-                }
+            this.formulario.ID_DOC_GUIA = '133';
+            this.formulario.PROFILE_ID = '0101';
+            this.formulario.VERSION_UBL = '2.1';
+            this.formulario.CUSTOMATIZACION = '2.0';
+            this.formulario.SERIE_NUMERO = '';
+            this.formulario.TIPO_DOCUMENTO = '09';
+            this.formulario.TIPO_DOCUMENTO_REMITENTE = '6';
+            this.formulario.TIPO_DOCUMENTO_DESTINATARIO = '6';
+            this.formulario.IDENTIFICADOR_TRASLADO = 'SUNAT_Envio';
+            this.formulario.CP_TIPO = 'Principal';
+            this.formulario.TIPO_ORIGEN = 0;
+            this.formulario.ID_DOC_ORIGEN = 0;
+            this.formulario.FECHA_EMISION = cambiarFormatoFecha(
+                this.fechaEmisionDocumento
             );
 
-        this.closeModal();
+            this.formulario.ITEMS = this.elementos;
+            this.formulario.PESO_BRUTO = this.formulario.PESO_BRUTO.toString();
+
+            this.grr_service
+                .guiaremisionremitentemanual_registrar(this.formulario)
+                .subscribe(
+                    (response) => {
+                        // console.log(response);
+                        this.toastr.success(
+                            'Se registró la guía de remisión ' +
+                                response.serie_numero
+                        );
+                    },
+                    (error) => {
+                        // this.btnNuevaGRR = false;
+                        this.toastr.error('Error');
+                        // console.log(error);
+                    }
+                );
+
+            this.closeModal();
+            this.isLoading = !this.isLoading;
+        } catch (error) {
+            // Aquí puedes agregar el código para manejar cualquier error que ocurra en el bloque try
+            console.error(error);
+            this.isLoading = !this.isLoading;
+        }
     }
 
     guardarGuiaRemitenteManualNuevo() {
@@ -446,5 +459,8 @@ export class GuiaRemisionRemitenteManualComponent {
                 (modalElement as HTMLElement).style.zIndex = '1051';
             });
         }, 0);
+    }
+    toggleSpinner() {
+        this.isLoading = !this.isLoading;
     }
 }

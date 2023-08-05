@@ -38,6 +38,7 @@ import {SidebarSearchComponent} from './components/sidebar-search/sidebar-search
 import { GuiaRemisionRemitenteComponent } from './pages/guia-remision-remitente/guia-remision-remitente.component';
 import { GuiaRemisionRemitenteManualComponent } from './pages/guia-remision-remitente-manual/guia-remision-remitente-manual.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 defineCustomElements();
 registerLocaleData(localeEn, 'en-EN');
@@ -66,7 +67,8 @@ registerLocaleData(localeEn, 'en-EN');
         ControlSidebarComponent,
         SidebarSearchComponent,
         GuiaRemisionRemitenteComponent,
-        GuiaRemisionRemitenteManualComponent
+        GuiaRemisionRemitenteManualComponent,
+        SpinnerComponent
     ],
     imports: [
         BrowserModule,
