@@ -15,6 +15,16 @@ import {FakeServicesService} from '@/services/fake-services.service';
     styleUrls: ['./guia-remision-remitente-manual.component.scss']
 })
 export class GuiaRemisionRemitenteManualComponent {
+    formulariovalidator = {
+        NUMERO_DOCUMENTO_REMITENTE: '',
+        NUMERO_DOCUMENTO_DESTINATARIO: '',
+        PESO_BRUTO: null,
+        INICIO_TRASLADO_ORIGEN: null,
+        RUC_ORIGEN: '',
+        RUC_DESTINO: ''
+    };
+    seHizoClicEnGuardar = false;
+
     constructor(
         private toastr: ToastrService,
         private grr_service: GuiaRemisionRemitenteService,
@@ -255,7 +265,6 @@ export class GuiaRemisionRemitenteManualComponent {
     // Función para cerrar el modal
     closeModal() {
         this.modalVisible = false;
-        this.isLoading = false;
     }
 
     // Función para guardar los datos del formulario
@@ -293,52 +302,200 @@ export class GuiaRemisionRemitenteManualComponent {
         this.closeModal();
     }
 
+    validateRucRemitente() {
+        const rucRemitente = this.formulario.NUMERO_DOCUMENTO_REMITENTE;
+        if (
+            rucRemitente &&
+            rucRemitente.length > 0 &&
+            rucRemitente.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validateRucDestinatario() {
+        const rucDestinatario = this.formulario.NUMERO_DOCUMENTO_DESTINATARIO;
+        if (
+            rucDestinatario &&
+            rucDestinatario.length > 0 &&
+            rucDestinatario.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    @ViewChild('motivoTrasladoElement', {static: false})
+    motivoTrasladoElementRef!: ElementRef;
+    validatemotivoTraslado() {
+        const selectElement = this.motivoTrasladoElementRef
+            .nativeElement as HTMLSelectElement;
+        if (selectElement.value !== '') {
+            selectElement.classList.remove('border-rojo'); // Remueve el borde rojo si es válido
+            return true;
+        } else {
+            selectElement.classList.add('border-rojo');
+            return false;
+        }
+    }
+    @ViewChild('unidadMedidaPesoBrutoElement', {static: false})
+    unidadMedidaPesoBrutoElementRef!: ElementRef;
+    validateunidadMedidaPesoBruto() {
+        const selectElement = this.unidadMedidaPesoBrutoElementRef
+            .nativeElement as HTMLSelectElement;
+        if (selectElement.value !== '') {
+            selectElement.classList.remove('border-rojo'); // Remueve el borde rojo si es válido
+            return true;
+        } else {
+            selectElement.classList.add('border-rojo');
+            return false;
+        }
+    }
+    validatepesoBruto(): boolean {
+        const pesoBruto = parseFloat(this.formulario.PESO_BRUTO);
+
+        return !isNaN(pesoBruto) && pesoBruto >= 0 && pesoBruto <= 1000;
+    }
+    @ViewChild('modalidadTrasladoElement', {static: false})
+    modalidadTrasladoElementRef!: ElementRef;
+    validatemodalidadTraslado() {
+        const selectElement = this.modalidadTrasladoElementRef
+            .nativeElement as HTMLSelectElement;
+        if (selectElement.value !== '') {
+            selectElement.classList.remove('border-rojo'); // Remueve el borde rojo si es válido
+            return true;
+        } else {
+            selectElement.classList.add('border-rojo');
+            return false;
+        }
+    }
+    validateinicioTraslado(): boolean {
+        const fechaInicioTraslado = new Date(
+            this.formulario.INICIO_TRASLADO_ORIGEN
+        );
+        const fechaActual = new Date();
+
+        return (
+            !isNaN(fechaInicioTraslado.getTime()) &&
+            fechaInicioTraslado <= fechaActual
+        );
+    }
+    validaterucOrigen() {
+        const rucOrigen = this.formulario.RUC_ORIGEN;
+        if (rucOrigen && rucOrigen.length > 0 && rucOrigen.length <= 11) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validaterucDestino() {
+        const rucDestino = this.formulario.RUC_DESTINO;
+        if (rucDestino && rucDestino.length > 0 && rucDestino.length <= 11) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    @ViewChild('ubigeoOrigenElement', {static: false})
+    ubigeoOrigenElementRef!: ElementRef;
+    validateubigeoOrigen() {
+        const selectElement = this.ubigeoOrigenElementRef
+            .nativeElement as HTMLSelectElement;
+        if (selectElement.value !== '') {
+            selectElement.classList.remove('border-rojo'); // Remueve el borde rojo si es válido
+            return true;
+        } else {
+            selectElement.classList.add('border-rojo');
+            return false;
+        }
+    }
+    @ViewChild('ubigeoDestinoElement', {static: false})
+    ubigeoDestinoElementRef!: ElementRef;
+    validateubigeoDestino() {
+        const selectElement = this.ubigeoOrigenElementRef
+            .nativeElement as HTMLSelectElement;
+        if (selectElement.value !== '') {
+            selectElement.classList.remove('border-rojo'); // Remueve el borde rojo si es válido
+            return true;
+        } else {
+            selectElement.classList.add('border-rojo');
+            return false;
+        }
+    }
     guardarGuiaRemitenteManual() {
         try {
-            this.isLoading = !this.isLoading;
+            // Validate the input before saving
+            this.seHizoClicEnGuardar = true;
 
-            this.formulario.ID_DOC_GUIA = '133';
-            this.formulario.PROFILE_ID = '0101';
-            this.formulario.VERSION_UBL = '2.1';
-            this.formulario.CUSTOMATIZACION = '2.0';
-            this.formulario.SERIE_NUMERO = '';
-            this.formulario.TIPO_DOCUMENTO = '09';
-            this.formulario.TIPO_DOCUMENTO_REMITENTE = '6';
-            this.formulario.TIPO_DOCUMENTO_DESTINATARIO = '6';
-            this.formulario.IDENTIFICADOR_TRASLADO = 'SUNAT_Envio';
-            this.formulario.CP_TIPO = 'Principal';
-            this.formulario.TIPO_ORIGEN = 0;
-            this.formulario.ID_DOC_ORIGEN = 0;
-            this.formulario.FECHA_EMISION = cambiarFormatoFecha(
-                this.fechaEmisionDocumento
-            );
+            // Valida la entrada antes de guardar
+            if (
+                this.validateRucRemitente() &&
+                this.validateRucDestinatario() &&
+                this.validatemotivoTraslado() &&
+                this.validateunidadMedidaPesoBruto() &&
+                this.validatemodalidadTraslado() &&
+                this.validateinicioTraslado() &&
+                this.validaterucOrigen() &&
+                this.validaterucDestino() &&
+                this.validateubigeoOrigen() &&
+                this.validateubigeoDestino()
+            ) {
+                this.isLoading = true;
 
-            this.formulario.ITEMS = this.elementos;
-            this.formulario.PESO_BRUTO = this.formulario.PESO_BRUTO.toString();
-
-            this.grr_service
-                .guiaremisionremitentemanual_registrar(this.formulario)
-                .subscribe(
-                    (response) => {
-                        // console.log(response);
-                        this.toastr.success(
-                            'Se registró la guía de remisión ' +
-                                response.serie_numero
-                        );
-                    },
-                    (error) => {
-                        // this.btnNuevaGRR = false;
-                        this.toastr.error('Error');
-                        // console.log(error);
-                    }
+                //
+                this.formulario.ID_DOC_GUIA = '133';
+                this.formulario.PROFILE_ID = '0101';
+                this.formulario.VERSION_UBL = '2.1';
+                this.formulario.CUSTOMATIZACION = '2.0';
+                this.formulario.SERIE_NUMERO = '';
+                this.formulario.TIPO_DOCUMENTO = '09';
+                this.formulario.TIPO_DOCUMENTO_REMITENTE = '6';
+                this.formulario.TIPO_DOCUMENTO_DESTINATARIO = '6';
+                this.formulario.IDENTIFICADOR_TRASLADO = 'SUNAT_Envio';
+                this.formulario.CP_TIPO = 'Principal';
+                this.formulario.TIPO_ORIGEN = 0;
+                this.formulario.ID_DOC_ORIGEN = 0;
+                this.formulario.FECHA_EMISION = cambiarFormatoFecha(
+                    this.fechaEmisionDocumento
                 );
 
-            this.closeModal();
-            this.isLoading = !this.isLoading;
+                this.formulario.ITEMS = this.elementos;
+                this.formulario.PESO_BRUTO =
+                    this.formulario.PESO_BRUTO.toString();
+
+                this.grr_service
+                    .guiaremisionremitentemanual_registrar(this.formulario)
+                    .subscribe(
+                        (response) => {
+                            // console.log(response);
+                            this.toastr.success(
+                                'Se registró la guía de remisión ' +
+                                    response.serie_numero
+                            );
+                        },
+                        (error) => {
+                            // this.btnNuevaGRR = false;
+                            this.toastr.error('Error');
+                            // console.log(error);
+                        }
+                    );
+
+                this.closeModal();
+                setTimeout(() => {
+                    this.isLoading = false;
+                }, 1500);
+            } else {
+                // Maneja el caso cuando la entrada es inválida (por ejemplo, muestra un mensaje de error)
+                console.log('RUC Remitente inválido');
+            }
+            //
         } catch (error) {
             // Aquí puedes agregar el código para manejar cualquier error que ocurra en el bloque try
             console.error(error);
-            this.isLoading = !this.isLoading;
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 1500);
         }
     }
 

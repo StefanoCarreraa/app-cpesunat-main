@@ -436,6 +436,13 @@
                                         formulario.NUMERO_DOCUMENTO_REMITENTE
                                     "
                                     required
+                                    [ngStyle]="{
+                                        'border-color':
+                                            seHizoClicEnGuardar &&
+                                            !validateRucRemitente()
+                                                ? 'red'
+                                                : ''
+                                    }"
                                     readonly
                                 />
                             </div>
@@ -480,6 +487,13 @@
                                     [(ngModel)]="
                                         formulario.NUMERO_DOCUMENTO_DESTINATARIO
                                     "
+                                    [ngStyle]="{
+                                        'border-color':
+                                            seHizoClicEnGuardar &&
+                                            !validateRucDestinatario()
+                                                ? 'red'
+                                                : ''
+                                    }"
                                     readonly
                                 />
                             </div>
@@ -524,9 +538,16 @@
                                         >Motivo de Traslado</label
                                     >
                                     <select
+                                        #motivoTrasladoElement
                                         id="motivoTraslado"
                                         class="form-control"
                                         name="motivoTraslado"
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                motivoTrasladoElementRef
+                                                    .nativeElement.value === ''
+                                        }"
                                         (change)="
                                             onMotivoTrasladoSelected(
                                                 $event.target.value,
@@ -554,9 +575,16 @@
                                         >Unidad de Medida</label
                                     >
                                     <select
+                                        #unidadMedidaPesoBrutoElement
                                         id="unidadMedida"
                                         class="form-control"
                                         name="unidadMedidaPesoBruto"
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                unidadMedidaPesoBrutoElementRef
+                                                    .nativeElement.value === ''
+                                        }"
                                         (change)="
                                             onUnidadMedidaPesoSelected(
                                                 $event.target.value,
@@ -588,16 +616,29 @@
                                         class="form-control"
                                         step="0.01"
                                         [(ngModel)]="formulario.PESO_BRUTO"
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                !validatepesoBruto()
+                                        }"
                                     />
                                 </div>
+
                                 <div class="form-group col-md-2">
                                     <label for="modalidadTraslado"
                                         >Modalidad de Traslado</label
                                     >
                                     <select
+                                        #modalidadTrasladoElement
                                         id="modalidadTraslado"
                                         class="form-control"
                                         name="modalidadTraslado"
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                modalidadTrasladoElementRef
+                                                    .nativeElement.value === ''
+                                        }"
                                         (change)="
                                             onModalidadTrasladoSelected(
                                                 $event.target.value,
@@ -633,6 +674,12 @@
                                             formulario.INICIO_TRASLADO_ORIGEN
                                         "
                                         [min]="getCurrentDate()"
+                                        required
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                !validateinicioTraslado()
+                                        }"
                                     />
                                 </div>
                             </div>
@@ -648,6 +695,13 @@
                                     class="form-control"
                                     name="rucOrigen"
                                     [(ngModel)]="formulario.RUC_ORIGEN"
+                                    [ngStyle]="{
+                                        'border-color':
+                                            seHizoClicEnGuardar &&
+                                            !validaterucOrigen()
+                                                ? 'red'
+                                                : ''
+                                    }"
                                 />
                             </div>
                             <div class="form-group col-md-3">
@@ -656,12 +710,18 @@
                                 >
                                 <div class="input-group">
                                     <input
+                                        #ubigeoOrigenElement
                                         type="text"
                                         id="ubigeoOrigen"
                                         class="form-control"
                                         name="ubigeoOrigen"
                                         [(ngModel)]="ubigeoOrigenSeleccionado"
                                         readonly
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                !validateubigeoOrigen()
+                                        }"
                                     />
                                     <div class="input-group-append">
                                         <button
@@ -685,6 +745,13 @@
                                     class="form-control"
                                     name="rucDestino"
                                     [(ngModel)]="formulario.RUC_DESTINO"
+                                    [ngStyle]="{
+                                        'border-color':
+                                            seHizoClicEnGuardar &&
+                                            !validaterucDestino()
+                                                ? 'red'
+                                                : ''
+                                    }"
                                 />
                             </div>
                             <div class="form-group col-md-3">
@@ -693,12 +760,18 @@
                                 >
                                 <div class="input-group">
                                     <input
+                                        #ubigeoDestinoElement
                                         type="text"
                                         id="ubigeoDestino"
                                         class="form-control"
                                         name="ubigeoDestino"
                                         [(ngModel)]="ubigeoDestinoSeleccionado"
                                         readonly
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                !validateubigeoDestino()
+                                        }"
                                     />
                                     <div class="input-group-append">
                                         <button
@@ -799,7 +872,6 @@
                                         />
                                     </div>
                                 </div>
-
                                 <div class="form-group col-md-2">
                                     <label for="tipoDocumento"
                                         >Tipo Documento</label
@@ -846,7 +918,6 @@
                                         />
                                     </div>
                                 </div>
-
                                 <div class="form-group col-md-2">
                                     <label for="numeroLicenciaTransportista"
                                         >Número de Licencia</label
@@ -864,7 +935,6 @@
                             </div>
 
                             <!-- TRANSPORTE PUBLICO -->
-
                             <div class="form-row" *ngIf="tipoTrasladoPublico">
                                 <div class="form-group col-md-2">
                                     <label for="datosTransportista"
@@ -999,7 +1069,6 @@
                         type="button"
                         class="btn btn-primary"
                         (click)="guardarGuiaRemitenteManual()"
-                        data-dismiss="modal"
                     >
                         Guardar
                     </button>
