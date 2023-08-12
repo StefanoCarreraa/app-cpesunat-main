@@ -53,9 +53,9 @@ export class GuiaRemisionRemitenteManualComponent {
     rucRemitente = '';
     fechaEmisionDocumento = '';
     rucBusqueda = '';
-    tipoTrasladoPrivado: boolean = true;
+    tipoTrasladoPrivado: boolean = false;
     tipoTrasladoPublico: boolean = false;
-
+    message_error: boolean = false;
     //Paginado Modal Ubigeo
     currentPage: number = 1;
     itemsPerPage: number = 10;
@@ -234,6 +234,7 @@ export class GuiaRemisionRemitenteManualComponent {
 
         // Ocultar el modal de Ubigeo y mostrar el modal principal
         modalUbigeo.style.display = 'none';
+        
     }
 
     seleccionarUbigeo(ubigeo: any) {
@@ -413,7 +414,7 @@ export class GuiaRemisionRemitenteManualComponent {
     @ViewChild('ubigeoDestinoElement', {static: false})
     ubigeoDestinoElementRef!: ElementRef;
     validateubigeoDestino() {
-        const selectElement = this.ubigeoOrigenElementRef
+        const selectElement = this.ubigeoDestinoElementRef
             .nativeElement as HTMLSelectElement;
         if (selectElement.value !== '') {
             selectElement.classList.remove('border-rojo'); // Remueve el borde rojo si es válido
@@ -423,12 +424,130 @@ export class GuiaRemisionRemitenteManualComponent {
             return false;
         }
     }
+    validatedatosVehiculo() {
+        const datosVehiculo = this.formulario.PLACA_VEHICULO;
+        if (
+            datosVehiculo &&
+            datosVehiculo.length > 0 &&
+            datosVehiculo.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validatedireccionOrigen() {
+        const direccionOrigen = this.formulario.DIRECCION_ORIGEN;
+        if (
+            direccionOrigen &&
+            direccionOrigen.length > 0 &&
+            direccionOrigen.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validatedireccionDestino() {
+        const direccionDestino = this.formulario.DIRECCION_DESTINO;
+        if (
+            direccionDestino &&
+            direccionDestino.length > 0 &&
+            direccionDestino.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validatedatosTransportistaNombres() {
+        const datosTransportistaNombres = this.formulario.CP_NOMBRES;
+        if (
+            datosTransportistaNombres &&
+            datosTransportistaNombres.length > 0 &&
+            datosTransportistaNombres.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validatedatosTransportistaApellido() {
+        const datosTransportistaApellido = this.formulario.CP_APELLIDOS;
+        if (
+            datosTransportistaApellido &&
+            datosTransportistaApellido.length > 0 &&
+            datosTransportistaApellido.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    @ViewChild('tipoDocumentoIdentidadElement', {static: false})
+    tipoDocumentoIdentidadElementRef!: ElementRef;
+    validatetipoDocumentoIdentidad() {
+        const selectElement = this.tipoDocumentoIdentidadElementRef
+            .nativeElement as HTMLSelectElement;
+        if (selectElement.value !== '') {
+            selectElement.classList.remove('border-rojo'); // Remueve el borde rojo si es válido
+            return true;
+        } else {
+            selectElement.classList.add('border-rojo');
+            return false;
+        }
+    }
+    validatenumeroDocumento() {
+        const numeroDocumento = this.formulario.CP_NUMERO_DOCUMENTO;
+        if (
+            numeroDocumento &&
+            numeroDocumento.length > 0 &&
+            numeroDocumento.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validatenumeroLicencia() {
+        const numeroLicencia = this.formulario.CP_LICENCIA;
+        if (
+            numeroLicencia &&
+            numeroLicencia.length > 0 &&
+            numeroLicencia.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validatedatosTransportistaRuc() {
+        const datosTransportistaRuc = this.formulario.CP_RUC;
+        if (
+            datosTransportistaRuc &&
+            datosTransportistaRuc.length > 0 &&
+            datosTransportistaRuc.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    validatedatosTransportistaRazonSocial() {
+        const datosTransportistaRazonSocial = this.formulario.CP_RAZON_SOCIAL;
+        if (
+            datosTransportistaRazonSocial &&
+            datosTransportistaRazonSocial.length > 0
+            // && datosTransportistaRazonSocial.length <= 11
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     guardarGuiaRemitenteManual() {
         try {
-            // Validate the input before saving
             this.seHizoClicEnGuardar = true;
-
-            // Valida la entrada antes de guardar
             if (
                 this.validateRucRemitente() &&
                 this.validateRucDestinatario() &&
@@ -439,10 +558,19 @@ export class GuiaRemisionRemitenteManualComponent {
                 this.validaterucOrigen() &&
                 this.validaterucDestino() &&
                 this.validateubigeoOrigen() &&
-                this.validateubigeoDestino()
+                this.validateubigeoDestino() &&
+                this.validatedireccionOrigen() &&
+                this.validatedireccionDestino() &&
+                ((this.validatedatosTransportistaNombres() &&
+                    this.validatedatosTransportistaApellido() &&
+                    this.validatetipoDocumentoIdentidad() &&
+                    this.validatenumeroDocumento() &&
+                    this.validatenumeroLicencia()) ||
+                    (this.validatedatosTransportistaRuc() &&
+                        this.validatedatosTransportistaRazonSocial()))
             ) {
+                this.message_error = false;
                 this.isLoading = true;
-
                 //
                 this.formulario.ID_DOC_GUIA = '133';
                 this.formulario.PROFILE_ID = '0101';
@@ -473,26 +601,28 @@ export class GuiaRemisionRemitenteManualComponent {
                                 'Se registró la guía de remisión ' +
                                     response.serie_numero
                             );
+                            setTimeout(() => {
+                                this.isLoading = false;
+                            }, 1500);
                         },
                         (error) => {
                             // this.btnNuevaGRR = false;
                             this.toastr.error('Error');
                             // console.log(error);
+                            setTimeout(() => {
+                                this.isLoading = false;
+                            }, 1500);
                         }
                     );
-
-                this.closeModal();
-                setTimeout(() => {
-                    this.isLoading = false;
-                }, 1500);
             } else {
                 // Maneja el caso cuando la entrada es inválida (por ejemplo, muestra un mensaje de error)
                 console.log('RUC Remitente inválido');
+                this.message_error = true;
             }
             //
         } catch (error) {
             // Aquí puedes agregar el código para manejar cualquier error que ocurra en el bloque try
-            console.error(error);
+            console.error('Ocurrió un error:', error);
             setTimeout(() => {
                 this.isLoading = false;
             }, 1500);

@@ -368,15 +368,19 @@
                     </button>
                 </div>
                 <div
+                    *ngIf="message_error"
+                    class="error-message"
+                >
+                <!-- <div
                     *ngIf="
                         datosVehiculo.invalid &&
                         (datosVehiculo.dirty || datosVehiculo.touched)
                     "
                     class="error-message"
-                >
+                > -->
                     <div class="alert alert-danger" role="alert">
                         <strong
-                            >La placa del vehículo no puede estar vacio
+                            >Falta completar los Campos
                             !</strong
                         >
                     </div>
@@ -702,6 +706,7 @@
                                                 ? 'red'
                                                 : ''
                                     }"
+                                    maxlength="11"
                                 />
                             </div>
                             <div class="form-group col-md-3">
@@ -752,6 +757,7 @@
                                                 ? 'red'
                                                 : ''
                                     }"
+                                    maxlength="11"
                                 />
                             </div>
                             <div class="form-group col-md-3">
@@ -803,6 +809,12 @@
                                         name="datosVehiculo"
                                         [formControl]="datosVehiculo"
                                         [(ngModel)]="formulario.PLACA_VEHICULO"
+                                        required
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                !validatedatosVehiculo()
+                                        }"
                                     />
                                 </div>
                             </div>
@@ -820,6 +832,12 @@
                                     name="direccionOrigen"
                                     rows="3"
                                     [(ngModel)]="formulario.DIRECCION_ORIGEN"
+                                    required
+                                    [ngClass]="{
+                                        'border-rojo':
+                                            seHizoClicEnGuardar &&
+                                            !validatedireccionOrigen()
+                                    }"
                                 ></textarea>
                             </div>
                             <div class="form-group col-md-6">
@@ -832,6 +850,12 @@
                                     name="direccionDestino"
                                     rows="3"
                                     [(ngModel)]="formulario.DIRECCION_DESTINO"
+                                    required
+                                    [ngClass]="{
+                                        'border-rojo':
+                                            seHizoClicEnGuardar &&
+                                            !validatedireccionDestino()
+                                    }"
                                 ></textarea>
                             </div>
                         </div>
@@ -853,6 +877,12 @@
                                             id="datosTransportistaNombres"
                                             name="datosTransportistaNombres"
                                             [(ngModel)]="formulario.CP_NOMBRES"
+                                            required
+                                            [ngClass]="{
+                                                'border-rojo':
+                                                    seHizoClicEnGuardar &&
+                                                    !validatedatosTransportistaNombres()
+                                            }"
                                         />
                                     </div>
                                 </div>
@@ -869,6 +899,12 @@
                                             [(ngModel)]="
                                                 formulario.CP_APELLIDOS
                                             "
+                                            required
+                                            [ngClass]="{
+                                                'border-rojo':
+                                                    seHizoClicEnGuardar &&
+                                                    !validatedatosTransportistaApellido()
+                                            }"
                                         />
                                     </div>
                                 </div>
@@ -877,6 +913,7 @@
                                         >Tipo Documento</label
                                     >
                                     <select
+                                        #tipoDocumentoIdentidadElement
                                         id="tipoDocumentoIdentidad"
                                         class="form-control"
                                         name="tipoDocumentoIdentidad"
@@ -888,6 +925,11 @@
                                                 ].text
                                             )
                                         "
+                                        [ngClass]="{
+                                            'border-rojo':
+                                                seHizoClicEnGuardar &&
+                                                !validatetipoDocumentoIdentidad()
+                                        }"
                                     >
                                         <option value="" disabled selected>
                                             Seleccione el Tipo de Documento
@@ -915,6 +957,11 @@
                                             [(ngModel)]="
                                                 formulario.CP_NUMERO_DOCUMENTO
                                             "
+                                            [ngClass]="{
+                                                'border-rojo':
+                                                    seHizoClicEnGuardar &&
+                                                    !validatenumeroDocumento()
+                                            }"
                                         />
                                     </div>
                                 </div>
@@ -929,6 +976,11 @@
                                             id="numeroLicencia"
                                             name="numeroLicencia"
                                             [(ngModel)]="formulario.CP_LICENCIA"
+                                            [ngClass]="{
+                                                'border-rojo':
+                                                    seHizoClicEnGuardar &&
+                                                    !validatenumeroLicencia()
+                                            }"
                                         />
                                     </div>
                                 </div>
@@ -947,6 +999,15 @@
                                             id="datosTransportistaRuc"
                                             name="datosTransportistaRuc"
                                             [(ngModel)]="formulario.CP_RUC"
+                                            maxlength="11"
+                                            inputmode="numeric"
+                                            pattern="[0-9]*"
+                                            required
+                                            [ngClass]="{
+                                                'border-rojo':
+                                                    seHizoClicEnGuardar &&
+                                                    !validatedatosTransportistaRuc()
+                                            }"
                                         />
                                     </div>
                                 </div>
@@ -963,6 +1024,12 @@
                                             [(ngModel)]="
                                                 formulario.CP_RAZON_SOCIAL
                                             "
+                                            required
+                                            [ngClass]="{
+                                                'border-rojo':
+                                                    seHizoClicEnGuardar &&
+                                                    !validatedatosTransportistaRazonSocial()
+                                            }"
                                         />
                                     </div>
                                 </div>
