@@ -367,11 +367,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div
-                    *ngIf="message_error"
-                    class="error-message"
-                >
-                <!-- <div
+                <div *ngIf="message_error" class="error-message">
+                    <!-- <div
                     *ngIf="
                         datosVehiculo.invalid &&
                         (datosVehiculo.dirty || datosVehiculo.touched)
@@ -379,10 +376,7 @@
                     class="error-message"
                 > -->
                     <div class="alert alert-danger" role="alert">
-                        <strong
-                            >Falta completar los Campos
-                            !</strong
-                        >
+                        <strong>Falta completar los Campos !</strong>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -707,6 +701,7 @@
                                                 : ''
                                     }"
                                     maxlength="11"
+                                    (keypress)="ValidateFormatNumeric($event)"
                                 />
                             </div>
                             <div class="form-group col-md-3">
@@ -758,6 +753,7 @@
                                                 : ''
                                     }"
                                     maxlength="11"
+                                    (keypress)="ValidateFormatNumeric($event)"
                                 />
                             </div>
                             <div class="form-group col-md-3">
@@ -807,6 +803,8 @@
                                         class="form-control"
                                         id="datosVehiculo"
                                         name="datosVehiculo"
+                                        pattern="[A-Z]{3}[-]\d{3}"
+                                        maxlength="7"
                                         [formControl]="datosVehiculo"
                                         [(ngModel)]="formulario.PLACA_VEHICULO"
                                         required
@@ -1000,14 +998,15 @@
                                             name="datosTransportistaRuc"
                                             [(ngModel)]="formulario.CP_RUC"
                                             maxlength="11"
-                                            inputmode="numeric"
-                                            pattern="[0-9]*"
                                             required
                                             [ngClass]="{
                                                 'border-rojo':
                                                     seHizoClicEnGuardar &&
                                                     !validatedatosTransportistaRuc()
                                             }"
+                                            (keypress)="
+                                                ValidateFormatNumeric($event)
+                                            "
                                         />
                                     </div>
                                 </div>
@@ -1255,6 +1254,7 @@
                 </div>
                 <div class="modal-body">
                     <input
+                        #buscarubigeofilterElement
                         type="text"
                         placeholder="Buscar"
                         (input)="filterUbigeos($event)"
