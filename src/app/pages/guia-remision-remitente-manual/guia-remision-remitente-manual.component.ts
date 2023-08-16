@@ -24,6 +24,8 @@ export class GuiaRemisionRemitenteManualComponent {
         RUC_DESTINO: ''
     };
     seHizoClicEnGuardar = false;
+    seHizoClicEnGuardar2 = false;
+
 
     constructor(
         private toastr: ToastrService,
@@ -452,7 +454,7 @@ export class GuiaRemisionRemitenteManualComponent {
     @ViewChild('tipoDocumentoIdentidadElement', {static: false})
     tipoDocumentoIdentidadElementRef!: ElementRef;
     validatetipoDocumentoIdentidad() {
-      const selectElement = this.tipoDocumentoIdentidadElementRef
+        const selectElement = this.tipoDocumentoIdentidadElementRef
             .nativeElement as HTMLSelectElement;
         if (selectElement.value !== '') {
             selectElement.classList.remove('border-rojo'); // Remueve el borde rojo si es válido
@@ -476,7 +478,50 @@ export class GuiaRemisionRemitenteManualComponent {
         return this.validarLongitudCampo(this.formulario.CP_RUC, 1, 11);
     }
     validatedatosTransportistaRazonSocial() {
-        return this.validarLongitudCampo(this.formulario.CP_RAZON_SOCIAL, 1, 100);
+        return this.validarLongitudCampo(
+            this.formulario.CP_RAZON_SOCIAL,
+            1,
+            100
+        );
+    }
+    @ViewChild('unidadesElement', {static: false})
+    unidadesElementRef!: ElementRef;
+    validateunidades() {
+        const inputElement = this.unidadesElementRef
+            .nativeElement as HTMLSelectElement;
+        if (inputElement.value !== '' && inputElement.length <= 50) {
+            inputElement.classList.remove('border-rojo');
+            return true;
+        } else {
+            inputElement.classList.add('border-rojo');
+            return false;
+        }
+    }
+    @ViewChild('descripcionElement', {static: false})
+    descripcionElementRef!: ElementRef;
+    validatedescripcion() {
+        const inputElement = this.descripcionElementRef
+            .nativeElement as HTMLSelectElement;
+        if (inputElement.value !== '') {
+            inputElement.classList.remove('border-rojo');
+            return true;
+        } else {
+            inputElement.classList.add('border-rojo');
+            return false;
+        }
+    }
+    @ViewChild('cantidadElement', {static: false})
+    cantidadElementRef!: ElementRef;
+    validatecantidad() {
+        const inputElement = this.cantidadElementRef
+            .nativeElement as HTMLSelectElement;
+        if (inputElement.value !== '') {
+            inputElement.classList.remove('border-rojo');
+            return true;
+        } else {
+            inputElement.classList.add('border-rojo');
+            return false;
+        }
     }
     guardarGuiaRemitenteManual() {
         try {

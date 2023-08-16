@@ -1171,6 +1171,7 @@
                       </select> -->
 
                         <select
+                            #unidadesElement
                             name="unidades"
                             class="form-control"
                             (change)="
@@ -1181,6 +1182,11 @@
                                     ].text
                                 )
                             "
+                            [ngClass]="{
+                                'border-rojo':
+                                    seHizoClicEnGuardar &&
+                                    !validateunidades()
+                            }"
                         >
                             >
                             <option value="" disabled selected>
@@ -1197,18 +1203,30 @@
                     <div class="form-group">
                         <label for="descripcion">Descripción</label>
                         <input
+                            #descripcionElement
                             type="text"
                             id="descripcion"
                             class="form-control"
+                            [ngClass]="{
+                                'border-rojo':
+                                    seHizoClicEnGuardar &&
+                                    !validatedescripcion()
+                            }"
                         />
                     </div>
                     <div class="form-group">
                         <label for="cantidad">Cantidad</label>
                         <input
+                            #cantidadElement
                             type="number"
                             id="cantidad"
                             class="form-control"
                             step="0.01"
+                            [ngClass]="{
+                                'border-rojo':
+                                    seHizoClicEnGuardar &&
+                                    !validatetipoDocumentoIdentidad()
+                            }"
                         />
                     </div>
                 </div>
@@ -1317,4 +1335,4 @@
 </section>
 <app-spinner *ngIf="isLoading"></app-spinner>
 
-<button (click)="toggleSpinner()">Mostrar/ocultar spinner</button>
+<!-- <button (click)="toggleSpinner()">Mostrar/ocultar spinner</button> -->
